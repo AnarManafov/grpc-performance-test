@@ -29,11 +29,12 @@ Download dependencies:
 # Download dependencies
 go mod tidy
 go mod download
+./build.sh
 ```
 
 ```shell
 # Run server
-go run cmd/server/main.go
+./bin/server
 ```
 
 ```shell

@@ -14,12 +14,18 @@ brew install protoc-gen-go
 brew install protoc-gen-go-grpc
 ```
 
-## Build/Run
+## Build
+
+Go gRPC files are included in the repo. But if there is a need to regenerate them, use:
 
 ```shell
 # Generate the Go code from the .proto file:
-protoc --go_out=. --go-grpc_out=. proto/service.proto
+protoc --go_out=. --go-grpc_out=. --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative proto/service.proto
+```
 
+Download dependencies: 
+
+```shell
 # Download dependencies
 go mod tidy
 go mod download

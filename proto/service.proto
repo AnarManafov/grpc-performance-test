@@ -5,13 +5,14 @@ package grpcperformance;
 option go_package = "github.com/AnarManafov/grpc-performance-test/proto";
 
 service PerformanceTest {
-  rpc StreamData(Empty) returns (stream Data) {}
+  rpc StreamData(ClientID) returns (stream Data);
   rpc Acknowledge(Ack) returns (Empty) {}
 }
 
-message Empty {}
+message ClientID { int32 id = 1; }
 
 message Data { string message = 1; }
 
 message Ack { string status = 1; }
 
+message Empty {}

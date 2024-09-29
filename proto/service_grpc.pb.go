@@ -27,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PerformanceTestClient interface {
-	StreamData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Data], error)
+	StreamData(ctx context.Context, in *ClientID, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Data], error)
 	Acknowledge(ctx context.Context, in *Ack, opts ...grpc.CallOption) (*Empty, error)
 }
 
@@ -39,13 +39,13 @@ func NewPerformanceTestClient(cc grpc.ClientConnInterface) PerformanceTestClient
 	return &performanceTestClient{cc}
 }
 
-func (c *performanceTestClient) StreamData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Data], error) {
+func (c *performanceTestClient) StreamData(ctx context.Context, in *ClientID, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Data], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &PerformanceTest_ServiceDesc.Streams[0], PerformanceTest_StreamData_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[Empty, Data]{ClientStream: stream}
+	x := &grpc.GenericClientStream[ClientID, Data]{ClientStream: stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (c *performanceTestClient) Acknowledge(ctx context.Context, in *Ack, opts .
 // All implementations must embed UnimplementedPerformanceTestServer
 // for forward compatibility.
 type PerformanceTestServer interface {
-	StreamData(*Empty, grpc.ServerStreamingServer[Data]) error
+	StreamData(*ClientID, grpc.ServerStreamingServer[Data]) error
 	Acknowledge(context.Context, *Ack) (*Empty, error)
 	mustEmbedUnimplementedPerformanceTestServer()
 }
@@ -84,7 +84,7 @@ type PerformanceTestServer interface {
 // pointer dereference when methods are called.
 type UnimplementedPerformanceTestServer struct{}
 
-func (UnimplementedPerformanceTestServer) StreamData(*Empty, grpc.ServerStreamingServer[Data]) error {
+func (UnimplementedPerformanceTestServer) StreamData(*ClientID, grpc.ServerStreamingServer[Data]) error {
 	return status.Errorf(codes.Unimplemented, "method StreamData not implemented")
 }
 func (UnimplementedPerformanceTestServer) Acknowledge(context.Context, *Ack) (*Empty, error) {
@@ -112,11 +112,11 @@ func RegisterPerformanceTestServer(s grpc.ServiceRegistrar, srv PerformanceTestS
 }
 
 func _PerformanceTest_StreamData_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(Empty)
+	m := new(ClientID)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(PerformanceTestServer).StreamData(m, &grpc.GenericServerStream[Empty, Data]{ServerStream: stream})
+	return srv.(PerformanceTestServer).StreamData(m, &grpc.GenericServerStream[ClientID, Data]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.

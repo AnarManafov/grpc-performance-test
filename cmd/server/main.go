@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -14,9 +15,11 @@ type server struct {
 	pb.UnimplementedPerformanceTestServer
 }
 
-func (s *server) StreamData(req *pb.Empty, stream pb.PerformanceTest_StreamDataServer) error {
+func (s *server) StreamData(req *pb.ClientID, stream pb.PerformanceTest_StreamDataServer) error {
+	clientID := req.Id
 	for {
-		err := stream.Send(&pb.Data{Message: "Hello, Client!"})
+		message := fmt.Sprintf("Hello, client #%d", clientID)
+		err := stream.Send(&pb.Data{Message: message})
 		if err != nil {
 			return err
 		}

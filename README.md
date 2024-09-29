@@ -40,3 +40,4 @@ go run cmd/server/main.go
 # run client in another terminal to start 500 clients
 ./run_clients.sh
 ```
+The script will spawn 500 client instances. Using the script you can change the number of client, clients ids and a server's host and port. By default it uses `localhost:50051`.

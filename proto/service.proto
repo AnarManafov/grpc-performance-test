@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package grpcperformance;
+
+service PerformanceTest {
+  rpc StreamData(Empty) returns (stream Data) {}
+  rpc Acknowledge(Ack) returns (Empty) {}
+}
+
+message Empty {}
+
+message Data { string message = 1; }
+
+message Ack { string status = 1; }
+

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package grpcperformance;
 
+option go_package = "github.com/AnarManafov/grpc-performance-test/proto";
+
 service PerformanceTest {
   rpc StreamData(Empty) returns (stream Data) {}
   rpc Acknowledge(Ack) returns (Empty) {}

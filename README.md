@@ -11,18 +11,18 @@
 brew install go
 brew install grpc
 brew install protoc-gen-go
+brew install protoc-gen-go-grpc
 ```
 
 ## Build/Run
 
 ```shell
-go mod tidy
-go mod download
-```
-
-```shell
 # Generate the Go code from the .proto file:
 protoc --go_out=. --go-grpc_out=. proto/service.proto
+
+# Download dependencies
+go mod tidy
+go mod download
 ```
 
 ```shell
